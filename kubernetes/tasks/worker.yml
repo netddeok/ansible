@@ -1,0 +1,26 @@
+---
+- name: Install Kubernetes packages for worker
+  yum:
+    name:
+      - kubelet
+      - kubeadm
+    state: present
+
+- name: Enable and start kubelet
+  service:
+    name: kubelet
+    state: started
+    enabled: yes
+
+- name : copy file
+  ansible.builtin.copy:
+    src: /home/ansible/join.sh
+    dest: /root/join.sh
+    owner: root
+    group: root
+    mode: '0700'
+
+
+- name : exec join
+  ansible.builtin.shell:
+    cmd : /root/join.sh
